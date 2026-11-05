@@ -119,6 +119,25 @@ RCD outputs the following files by default:
 In case you need more help to use RCD, please, feel free to contact us!
 
 
+## Quick test (MPI)
+
+A short check that the MPI build works, using the first two cases of the 12-residue benchmark
+(build with `-DRCD_MPI=ON` and run `./download_korp.sh` first):
+
+```bash
+cd rcd_seok12
+head -2 seok12.txt > test2.txt
+mpirun -np 6 ../bin/rcd_mpi_gcc test2.txt -n 1000 -r -t 0.90 -d 0.5 --linear -x ../src/libenergy/dunbrack.bin --energy_file ../src/libenergy/korp6Dv1.bin --loco_best 100 --bench -o mytest
+```
+
+It takes about 45 s with 6 processes. `mytest/results.txt` should contain one line per case, with
+results close to these (runs are random, so small differences are normal):
+
+| PDB   | Avg RMSD [A] | Min RMSD [A] | Closed [%] |
+|-------|--------------|--------------|------------|
+| 1a8dA | ~5.4         | ~2.5         | ~43        |
+| 1arbA | ~4.0         | ~1.2         | ~7         |
+
 ## Building (CMake)
 
 ```
