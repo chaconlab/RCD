@@ -1,4 +1,14 @@
 cmake_minimum_required(VERSION 3.16)
+# Ignore compiler/linker flags inherited from the shell (e.g. an active conda
+# environment exports CXXFLAGS/LDFLAGS with -march=nocona, -rpath ..., etc.).
+# Set -DRCD_USE_ENV_FLAGS=ON to keep them.
+option(RCD_USE_ENV_FLAGS "Honour CXXFLAGS/CPPFLAGS/LDFLAGS from the environment" OFF)
+if(NOT RCD_USE_ENV_FLAGS)
+  foreach(_v CXXFLAGS CFLAGS CPPFLAGS LDFLAGS)
+    unset(ENV{${_v}})
+  endforeach()
+endif()
+
 project(RCD VERSION 1.06 LANGUAGES CXX)
 
 # ---------------------------------------------------------------------------
@@ -79,7 +89,13 @@ if(RCD_INTEL)
   target_compile_options(volume PRIVATE -qmkl=sequential)
   set(RCD_LAPACK -qmkl=sequential)
 else()
-  find_package(LAPACK REQUIRED)
+  find_package(LAPACK)
+  if(NOT LAPACK_FOUND)
+    message(FATAL_ERROR "LAPACK (dgelsd) is required for --linear. Install it, e.g. "
+                        "'sudo apt install liblapack-dev' (or use -DRCD_INTEL=ON for MKL), "
+                        "or point CMake to it with -DCMAKE_PREFIX_PATH=<dir>.")
+  endif()
+  message(STATUS "RCD: using LAPACK ${LAPACK_LIBRARIES}")
   set(RCD_LAPACK ${LAPACK_LIBRARIES})
 endif()
 
