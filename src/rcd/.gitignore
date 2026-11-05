@@ -1,0 +1,5 @@
+/*/*.d
+/*/*.o
+/Release_gcc/
+/Release_MPI_intel/
+/Release_MPI_intel2/
