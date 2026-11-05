@@ -27,7 +27,7 @@ endif()
 
 # Output layout identical to the old makefiles
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)   # executables go to <rcd home>/bin
 
 # Flavor suffix, as in the old rcd_mpi_gcc / lib*_gcc naming
 if(RCD_INTEL)
@@ -39,6 +39,9 @@ endif()
 set(SRC ${CMAKE_SOURCE_DIR}/src)
 
 # --- compiler flags ---------------------------------------------------------
+# Explicit optimisation level for every target (libtools, libpdb, libvolume,
+# libenergy, libga and rcd), independent of what the environment's CXXFLAGS says.
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
 if(RCD_INTEL)
   set(RCD_OPT   -O3 -g -inline-level=2)
 else()
@@ -52,7 +55,7 @@ function(rcd_lib name dir)
   add_library(${name} STATIC ${srcs})
   target_include_directories(${name} PUBLIC ${SRC}/${dir}/include)
   target_include_directories(${name} PRIVATE ${SRC})
-  target_compile_options(${name} PRIVATE ${RCD_OPT})
+  target_compile_options(${name} PRIVATE ${RCD_OPT} -O3)   # -O3 explicitly for each library
   set_target_properties(${name} PROPERTIES POSITION_INDEPENDENT_CODE ON)
 endfunction()
 
@@ -83,7 +86,7 @@ endif()
 # --- executable -------------------------------------------------------------
 add_executable(rcd ${SRC}/rcd/rcd.cpp ${SRC}/rcd/rt_timer.cpp)
 target_include_directories(rcd PRIVATE ${SRC}/rcd/include ${SRC} ${CMAKE_SOURCE_DIR}/includes)
-target_compile_options(rcd PRIVATE ${RCD_OPT})
+target_compile_options(rcd PRIVATE ${RCD_OPT} -O3)
 target_compile_definitions(rcd PRIVATE VOLUME_INCLUDED)
 target_link_libraries(rcd PRIVATE ga energy pdb volume tools ${RCD_LAPACK} rt)
 
