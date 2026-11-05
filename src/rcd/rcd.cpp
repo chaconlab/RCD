@@ -893,6 +893,8 @@ int main(int argc, char** argv)
 
 		if( EMmap.isSet() )
 		{
+			fprintf(stderr,"rcd> ERROR: EM-map scoring is not available: support was removed\n");
+			exit(1);
 			em_thr = EMmap.getValue(); // EM-map threshold (only voxel values ABOVE this threshold will be considered)
 			em_switch = true; // Enable EM-map loops scoring (by cross-correlation)
 		}
@@ -2489,67 +2491,6 @@ int main(int argc, char** argv)
 
 
 
-		//
-		// Cross-correlation with EM-maps as scoring function
-		//
-		int *workmask; // Integer mask for fast cross-correlation computation
-		vlVolume *workmap; // Cropped and masked input EM-map
-		vlVolume *loopmap; // Simulated loop map
-		if(em_switch) // EM-map loops scoring enabled
-		{
-			// Current EM-map file name
-			strncpy(tmp_path, pdbfile[i_pdb].string, lon);
-			tmp_path[lon]='\0';
-			strcat(tmp_path,".mrc");
-			tmp_path[lon+4]='\0';
-
-			fprintf(stdout,"rcd> Reading EM-map for Cross-correlation computations: %s\n", tmp_path);
-			vlVolume *emmap = FOPS::readFile(tmp_path);
-			// FOPS::writeFile(emmap,"emmap.mrc");
-
-			// Resize EM-map to match "vol" map (clashes map) dimensions.
-			vlDim dim;
-			dim = vol->dim(); // Map sizes
-			vlUnit uni;
-			uni = vol->units(); // Samplings (voxel size)
-			vlPoint3f ori; // Origin (minimum corner)
-			vol->getPosition(&ori); // Origins
-			vlPoint3f corn; // Corner (maximum) position (real space)
-			corn.x( (float)dim.x() * (float)uni.x() + ori.x() );
-			corn.y( (float)dim.y() * (float)uni.y() + ori.y() );
-			corn.z( (float)dim.z() * (float)uni.z() + ori.z() );
-
-			// EM-map resize (now, the motion should be contained...)
-			emmap = FOPS::resize(emmap,ori,corn,true);
-			// FOPS::writeFile(emmap,"emmap_box.mrc");
-			// FOPS::writeFile(vol,"vol_box.mrc");
-
-			// Copy "vol" map (clashes map)
-			vlVolume *maskmap = new vlVolume( vol );
-
-			// Create a mask map of the same size as EM-map
-			maskmap = FOPS::interpolate_map(maskmap, emmap->units(), true);
-			// FOPS::writeFile(maskmap,"maskmap.mrc");
-
-			// Compute mask of indices (array of integers) with two maps. Values above or below the respective thresholds can be selected.
-			workmask = FOPS::indices_mask(maskmap, 0.5, false, emmap, em_thr, true);
-
-			// Returns the dot product between two maps (faster than cross-correlation). Mon made (24/8/2018)
-			// float dot = FOPS::dotprod_mask(emmap, maskmap, imask);
-			// fprintf(stderr, "dot= %f\n", dot);
-
-			// Create a masked output map from the input map and an integers-array mask
-			workmap = FOPS::apply_mask(emmap, workmask);
-			delete(emmap);
-			// FOPS::writeFile(workmap,"workmap.mrc");
-
-			// Create an empty loop map compatible (same size) with "workmap"
-			loopmap = new vlVolume( workmap ); // loop simulated map
-			// loopmap->clear(0); // Set all voxels to zero?
-			// FOPS::writeFile(loopmap,"loopmap.mrc");
-
-			// exit(0);
-		}
 		delete box; // "box" not needed anymore
 
 		// PD2 Bump filtering stuff
@@ -5634,27 +5575,6 @@ int main(int argc, char** argv)
 					scores->array[k] += rama_factor * rama_energy2(dihedrals_sol + k*nr_atoms_loop, nr_atoms_loop/3, ramaps, size2D);
 				}
 
-				// Compute Cross-Correlation between loop simulated map and input EM-map for OK solution
-				if(em_switch && presampling_continue) // KORP
-				{
-					// Clear the loop simulated map
-					loopmap->clear(0);
-
-					// Project a "co" minimal backbone representation (just N, CA, and C atoms) into a pre-existent map.
-					co2map_real( loopmap, loopmap->units().x() * 3, nr_atoms_loop, co_sol->el + k*nr_atoms_loop, p1co_sol->el + k*nr_atoms_loop, cg_mode, residuemarker);
-
-					// FOPS::writeFile(loopmap,"loopmap.mrc");
-					// exit(0);
-
-					// scores->array[k] = 1 / FOPS::dotprod_mask(loopmap, workmap, workmask); // 1/dot --> The lower the better...
-					// scores->array[k] = 1 - FOPS::dotprod_mask(loopmap, workmap, workmask); // 1-dot --> The lower the better...
-
-					// Cross-correlation calculation
-					if(emodel == 1 || emodel == 5 || emodel == 56 || emodel == 6) // Only save ccorrs if Energies are also requested
-						ccorrs->array[k] = 1 - FOPS::correlation_mask(loopmap, workmap, workmask); // 1-dot --> The lower the better...
-					else
-						scores->array[k] = 1 - FOPS::correlation_mask(loopmap, workmap, workmask); // 1-dot --> The lower the better...
-				}
 
 				if(pid==0 && bump_filter && presampling_switch && !presampling_continue)
 				{
@@ -7069,9 +6989,6 @@ int main(int argc, char** argv)
 			energies_extra	= new Stat(cycles);    //  Stat object for Extra-Energies
 			scores		= new Stat(cycles);    //  Stat object for LOCO-ICOS energies
 
-			delete(workmap); // Delete the cropped and masked EM-map
-			delete(loopmap); // Delete the loop simulated map
-			free(workmask); // Free integers mask for fast cross-correlation computation
 		}
 
 		free(bond_length2);

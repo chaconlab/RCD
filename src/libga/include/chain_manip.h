@@ -5,6 +5,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
+#include "libvolume/include/vlvolume.h" // vlVolume is needed for the clash grids (independent of VOLUME_INCLUDED)
 #include "libpdb/include/Macromolecule.h"
 #include "libpdb/include/pdbIter.h"
 #include "libpdb/include/Fragment.h"

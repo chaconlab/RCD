@@ -49,7 +49,6 @@
 #include "libenergy/include/icosa.h" // ICOSA energy
 #include "libenergy/include/korpe.h" // KORP energy
 //#include "librasp/include/rasp.h" // RASP side chain repacking
-//#include "librasp2/include/rasp2.h" // RASP side chain repacking
 #include "libenergy/include/rama.h" // Rama energy
 
 

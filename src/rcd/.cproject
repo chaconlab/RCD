@@ -49,7 +49,6 @@
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="intel.linkstep.libname.789814203" name="Additional Libraries (-l)" superClass="intel.linkstep.libname" useByScannerDiscovery="false" valueType="libs">
 									<listOptionValue builtIn="false" value="ga"/>
-									<listOptionValue builtIn="false" value="rasp2"/>
 									<listOptionValue builtIn="false" value="energy"/>
 									<listOptionValue builtIn="false" value="pdb"/>
 									<listOptionValue builtIn="false" value="volume"/>
@@ -114,7 +113,6 @@
 							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.base.340352465" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.base">
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.cpp.link.option.libs.335813132" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" useByScannerDiscovery="false" valueType="libs">
 									<listOptionValue builtIn="false" value="lapack"/>
-									<listOptionValue builtIn="false" value="rasp2_gcc"/>
 									<listOptionValue builtIn="false" value="ga_gcc"/>
 									<listOptionValue builtIn="false" value="energy_gcc"/>
 									<listOptionValue builtIn="false" value="pdb_gcc"/>
@@ -160,7 +158,6 @@
 							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.base.461838019" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.base">
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.cpp.link.option.libs.1945304382" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="lapack"/>
-									<listOptionValue builtIn="false" value="rasp2_gcc"/>
 									<listOptionValue builtIn="false" value="ga_gcc"/>
 									<listOptionValue builtIn="false" value="energy_gcc"/>
 									<listOptionValue builtIn="false" value="pdb_gcc"/>
@@ -205,7 +202,6 @@
 							<tool id="cdt.managedbuild.tool.macosx.cpp.linker.macosx.base.185030727" name="MacOS X C++ Linker" superClass="cdt.managedbuild.tool.macosx.cpp.linker.macosx.base">
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="macosx.cpp.link.option.libs.2057968809" name="Libraries (-l)" superClass="macosx.cpp.link.option.libs" useByScannerDiscovery="false" valueType="libs">
 									<listOptionValue builtIn="false" value="ga_gcc"/>
-									<listOptionValue builtIn="false" value="rasp2_gcc"/>
 									<listOptionValue builtIn="false" value="energy_gcc"/>
 									<listOptionValue builtIn="false" value="pdb_gcc"/>
 									<listOptionValue builtIn="false" value="volume_gcc"/>
@@ -297,7 +293,6 @@
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="intel.linkstep.libname.92269569" name="Additional Libraries (-l)" superClass="intel.linkstep.libname" useByScannerDiscovery="false" valueType="libs">
 									<listOptionValue builtIn="false" value="ga"/>
-									<listOptionValue builtIn="false" value="rasp2"/>
 									<listOptionValue builtIn="false" value="energy"/>
 									<listOptionValue builtIn="false" value="pdb"/>
 									<listOptionValue builtIn="false" value="volume"/>
@@ -371,7 +366,6 @@
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="intel.linkstep.libname.1652098814" name="Additional Libraries (-l)" superClass="intel.linkstep.libname" useByScannerDiscovery="false" valueType="libs">
 									<listOptionValue builtIn="false" value="ga"/>
-									<listOptionValue builtIn="false" value="rasp2"/>
 									<listOptionValue builtIn="false" value="energy"/>
 									<listOptionValue builtIn="false" value="pdb"/>
 									<listOptionValue builtIn="false" value="volume"/>
