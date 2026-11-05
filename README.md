@@ -31,18 +31,24 @@ parallel (with MPI) just copy and paste the following commands:
 
 Go to the test directory:
 
-#> cd rcd_seok12
+```bash
+cd rcd_seok12
+```
   
 And model the 100 lowest energy candidates from a total sampling of 1000 decoys for
 20 12-residues long cases:
 
-#> mpirun -np 6 ../bin/rcd_mpi_gcc seok12.txt -n 1000 -r -t 0.90 -d 0.5 --linear -x ../src/libenergy/dunbrack.bin --energy_file ../src/libenergy/korp6Dv1.bin --loco_best 100 --bench -o mybasename
+```bash
+mpirun -np 6 ../bin/rcd_mpi_gcc seok12.txt -n 1000 -r -t 0.90 -d 0.5 --linear -x ../src/libenergy/dunbrack.bin --energy_file ../src/libenergy/korp6Dv1.bin --loco_best 100 --bench -o mybasename
+```
 
 
 Despite we strongly recommend running RCD in parallel, you can also use the 
 sequential version of RCD (same options, without mpirun):
 
-#> ../bin/rcd_gcc seok12.txt -n 1000 -r -t 0.90 -d 0.5 --linear -x ../src/libenergy/dunbrack.bin --energy_file ../src/libenergy/korp6Dv1.bin --loco_best 100 --bench -o mybasename
+```bash
+../bin/rcd_gcc seok12.txt -n 1000 -r -t 0.90 -d 0.5 --linear -x ../src/libenergy/dunbrack.bin --energy_file ../src/libenergy/korp6Dv1.bin --loco_best 100 --bench -o mybasename
+```
 
 The input file (seok12.txt) is a plain text input file. That uses the
 following simple format, one loop per line:
